@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <title>Daily Assignment Week 3 Day 1</title>
+    <style>
+        .outline{
+            width: 50%;
+            margin : 0 auto;
+        }
+        .getAgeBtn{
+            margin-top: 2%;
+        }
+    </style>
+    <script>
+      // Part 1
+
+      setInterval(() => {
+        // Declare a variable and assign a datetime
+        let dat = new Date();
+
+        // Extract the hour,mins,sec
+        let hour = dat.getHours();
+        let mins = dat.getMinutes();
+        let sec = dat.getSeconds();
+
+        // check if the hour , mins or sec is less than 10 or >= 0l
+        if (hour >= 0 && hour < 10) {
+          hour = "0" + hour;
+        } else if (mins >= 0 && mins < 10) {
+          mins = "0" + mins;
+        } else if (sec >= 0 && sec < 10) {
+          sec = "0" + sec;
+        }
+
+        //
+        document.getElementById("time").innerHTML =
+          hour + ":" + mins + ":" + sec;
+      }, 1000);
+
+      // Part2
+      function getAgeBtn(){
+        // Declare a variable and assign today's date to it
+        let todayDate = new Date();
+        // Declare a variable and assign the user input to it
+        let inputDat = new Date(document.getElementById("DateInp").value);
+       
+        // Check if the dob is equal or more than today's date
+        if(inputDat >= todayDate ){
+
+            document.getElementById("age").hidden = true; // Hide the span tag 
+            
+            alert("Your Date of birth cannot be more than or equal to today's date!!!"); //  Display the alert message
+        }else{
+            
+            let diff = todayDate -  inputDat.getTime();
+            let diffyear = new Date(diff).getUTCFullYear();
+            let age = Math.abs(diffyear -1970);
+
+             // Check if the age is less than 1 years old
+            if(age < 1){
+                alert("You have entered a date of birth whose age is less than 1 years old"); //  Display the alert message
+                document.getElementById("age").hidden = true; // Hide the span tag 
+            }else{
+                document.getElementById("age").hidden = false; // Unhide the span tag 
+                document.getElementById("age").innerHTML = age + " years old"; // Display the output in the innerhtml
+            }
+           
+        }
+
+       
+       
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Part 1 -->
+    <div class="outline">
+        <h1>Part 1: </h1>
+
+        <h4>What's the Time Now</h1>
+        <div id="time"></div>
+        
+    <!-- Part 2 -->
+        <h1>Part 2: </h1>
+        <div class="inpDate">
+            <label for="DateInp"> Select the Date of Birth:</label>
+            <input type="date" class="form-control" id="DateInp" />
+        </div>
+        <button
+            type="button"
+            class="btn btn-info getAgeBtn"
+            onclick="getAgeBtn()">
+            Get Age
+        </button>
+        <span id="age"> </span>
+    </div>
+  </body>
+</html>
