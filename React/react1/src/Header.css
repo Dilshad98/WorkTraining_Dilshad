@@ -1,0 +1,39 @@
+.logo_pic {
+    width: 200;
+    height: 190px;
+    margin-left: 42%;
+  }
+
+   .Menu_Bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: white;
+    position: sticky;
+    top: 0;
+ 
+
+  }
+
+  li {
+    float: left;
+  }
+
+  li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  li a:hover:not(.active) {
+    background-color: #f9ecf2;
+  }
+
+  li a.active {
+    color: #ff4da6;
+    background-color: #f9ecf2;
+  }

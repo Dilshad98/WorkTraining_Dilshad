@@ -1,0 +1,28 @@
+h5.follow_us {
+    padding: 8px;
+    text-align: center;
+    margin: 2px;
+    font-size: 12px;
+    font-family: sans-serif;
+  }
+
+  p {
+    font-size: 12px;
+    text-align: center;
+    margin: 2px;
+    color: #70757a;
+    font-family: sans-serif;
+  }
+  footer {
+    background-color: #e6e6e6;
+  }
+  .foot_img {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 5px;
+  }
+  .foot_img > img {
+    width: 27px;
+    height: 27px;
+  }

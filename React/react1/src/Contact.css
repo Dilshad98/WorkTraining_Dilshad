@@ -1,0 +1,45 @@
+  /* Main Content */
+  h2 {
+    text-align: center;
+    font-family: sans-serif;
+  }
+  form {
+    text-align: center;
+  }
+  .f_name,
+  .l_name,
+  .email,
+  .phone_num {
+    margin-bottom: 15px;
+  }
+
+  input {
+    border: 1px solid #ccc;
+    width: 20%;
+    height: 30px;
+    margin-left: 3%;
+  }
+  /* label[for="Fname"]{
+    margin-left: 2%;
+  }
+  label[for="Lname"]{
+    margin-left: 2%;
+  } */
+  label[for="phone"] {
+    margin-right: 3%;
+  }
+  label[for="email"] {
+    margin-right: 3%;
+  }
+  label[for="msg"] {
+    margin-top: 30px;
+    margin-right: 25%;
+  }
+  textarea {
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    margin-left:10%;
+  }
+  .btn_sub {
+    margin-bottom: 30px;
+  }
