@@ -4,7 +4,7 @@ import './About.css';
 function About(){
     return(
         <div>
-            <Header/>
+            <Header menubar="About"/>
             <h2>About Us</h2>
 
             <p className="about_cxt">

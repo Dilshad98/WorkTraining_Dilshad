@@ -90,7 +90,7 @@ function Pg(){
     }
     return(
         <div className='outline'>
-             {/* Part 1  */}
+            {/* Part 1  */}
             <h2>Part 1:</h2>
             {/* Name  */}
             <div className="name">

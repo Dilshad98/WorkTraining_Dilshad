@@ -1,0 +1,27 @@
+.box{
+    width: 50%;
+    margin: 0 auto 2% auto;
+    border: 2px solid blueviolet;
+    
+   
+}
+span{
+    color: red;
+    
+}
+.ava{
+    margin-top: 2%;
+}
+#userBtn{
+    margin-top: 2%;
+    background-color: rgb(255, 0, 230);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+
+}
+  .hidden{
+    
+   display: none;
+}

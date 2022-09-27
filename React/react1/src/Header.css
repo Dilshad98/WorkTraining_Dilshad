@@ -1,7 +1,7 @@
 .logo_pic {
     width: 200;
     height: 190px;
-    margin-left: 42%;
+    
   }
 
    .Menu_Bar {
@@ -33,7 +33,7 @@
     background-color: #f9ecf2;
   }
 
-  li a.active {
-    color: #ff4da6;
-    background-color: #f9ecf2;
+  li.active {
+   
+    background-color: #ff4da6;
   }

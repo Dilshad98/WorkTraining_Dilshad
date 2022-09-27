@@ -6,7 +6,7 @@ function Home(){
 
     return(
         <div>
-            <Header/>
+            <Header menubar="Home"/>
             <div className="banner_pic">
             <img
                 className="cupcake_pic"
