@@ -24,6 +24,8 @@ import UserInfo from './UserInfo';
         }
     }
 
+   
+
     submitBtn=()=>{
         if(this.state.name == "" ){
             this.setState({"ErrorName":true});
@@ -69,6 +71,12 @@ import UserInfo from './UserInfo';
         }
     }
 
+    // It will  load during page load
+    componentDidMount(){
+        console.log("Hello");
+        this.getUserBtn(1);
+    }
+    
     getUserBtn=(pageNum)=>{
         console.log("hh");
         fetch("https://reqres.in/api/users?page="+pageNum)
@@ -82,7 +90,7 @@ import UserInfo from './UserInfo';
 
   render() {
     return (
-      <div class="outline">
+      <div className="outline">
 
         <Header menubar="ClaCom"/>
         {/* Part 2.1 */}

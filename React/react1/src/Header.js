@@ -6,12 +6,13 @@ function Header(props){
     // Part 1
     const [LoginStatus,setLoginStatus] = useState(false);
     useEffect(()=>{
-            if(localStorage.getItem("token") != undefined && localStorage.getItem("token") != ''){
-                setLoginStatus(true);
-            }else{
-                setLoginStatus(false);
-            }
+        if(localStorage.getItem("token") != undefined && localStorage.getItem("token") != ''){
+            setLoginStatus(true);
+        }else{
+            setLoginStatus(false);
+        }
     },[])
+    
 
     return(
         <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserInfo.css';
 
 function UserInfo(props){
@@ -20,6 +20,7 @@ function UserInfo(props){
         setUid(userInfoObj.id);
         setImage(userInfoObj.avatar);
     }
+    
     return(
         <>
             <h1>User Info</h1>
