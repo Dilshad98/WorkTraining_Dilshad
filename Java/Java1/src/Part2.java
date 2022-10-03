@@ -1,6 +1,5 @@
 public class Part2 {
     String[] strArr = {"Hi","Hello","Hey"};
-
     long[] longArr = {66768768,6464545,90988454,5743957};
     public static void main(String[] args) {
         // create an object
