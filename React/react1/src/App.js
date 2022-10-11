@@ -5,6 +5,7 @@ import Contact from './Contact';
 import ProductList from './ProductList.js';
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import ClaCom from './ClaCom';
+import Login from './Login';
 
 
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/ProductList" element={<ProductList/>}/>        
           <Route path="/Contact" element={<Contact/>}/>
           <Route path="/claCom" element={<ClaCom/>}/>
+          <Route path="/Login" element={<Login/>}/>
           <Route path="/" element={<Home/>}/>
       </Routes>
    </Router>

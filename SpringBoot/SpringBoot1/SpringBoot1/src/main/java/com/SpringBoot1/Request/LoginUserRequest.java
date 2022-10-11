@@ -1,8 +1,13 @@
 package com.SpringBoot1.Request;
 
+
 public class LoginUserRequest {
     String email,password,username,address;
 
+
+    public LoginUserRequest() {
+
+    }
 
     public String getEmail() {
         return email;
