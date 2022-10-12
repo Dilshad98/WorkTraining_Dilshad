@@ -2,11 +2,32 @@ package com.SpringBoot1.Request;
 
 
 public class LoginUserRequest {
-    String email,password,username,address;
+    Integer id;
+    String email;
 
+    String password;
+    String username;
+    String address;
+     String  mobile;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public LoginUserRequest() {
 
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getEmail() {

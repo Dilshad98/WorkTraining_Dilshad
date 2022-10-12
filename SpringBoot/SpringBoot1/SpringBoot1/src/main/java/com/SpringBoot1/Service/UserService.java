@@ -1,12 +1,17 @@
 package com.SpringBoot1.Service;
 
 import com.SpringBoot1.Model.UserModel;
+import com.SpringBoot1.Repo.UserRepo;
+import com.SpringBoot1.Request.LoginUserRequest;
 import com.SpringBoot1.Response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -54,4 +59,85 @@ public class UserService {
             return ResponseEntity.ok(Response);
         }
     }
+    @Autowired
+    UserRepo userRepo;
+    public boolean createUser(LoginUserRequest loginUserRequest) throws Exception{
+        try{
+            Optional<UserModel> usrEmailExist = userRepo.getValidEmail(loginUserRequest.getEmail());
+            if(usrEmailExist.isPresent()){
+                throw new Exception("Email already exist!!");
+            }
+            UserModel userModel = new UserModel();
+            userModel.setEmail(loginUserRequest.getEmail());
+            userModel.setUsername(loginUserRequest.getUsername());
+            userModel.setPassword(loginUserRequest.getPassword());
+            userModel.setMobile(loginUserRequest.getMobile());
+            userModel.setAddress(loginUserRequest.getAddress());
+            userRepo.save(userModel);
+            return true;
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public UserModel validateLogin(String email,String password) throws  Exception{
+        UserModel user =  userRepo.getUserByEmailAndPassword(email,password).orElseThrow(()->new Exception("Invalid username and password,Please Try Again!!"));
+        return  user;
+    }
+    public List<UserModel> viewUser() throws  Exception {
+
+        return userRepo.findAll();
+
+
+    }
+    public UserModel viewUser(Integer id) throws Exception{
+        Optional <UserModel> userModel =  userRepo.findById(id);
+
+        if(userModel.isPresent()){
+            return userModel.get();
+        }else{
+            throw new Exception("User Not Found!!");
+        }
+    }
+    public boolean updateUser(Integer id ,LoginUserRequest loginUserRequest) throws  Exception{
+        try{
+
+            Optional<UserModel> userModelOption = userRepo.findById(loginUserRequest.getId());
+
+
+            if(userModelOption.isPresent()){
+                UserModel userModTmp = userModelOption.get();
+                if(loginUserRequest.getEmail() != null && !loginUserRequest.getEmail().equals("")){
+                    userModTmp.setEmail(loginUserRequest.getEmail());
+                }
+                if(loginUserRequest.getMobile() != null && !loginUserRequest.getMobile().equals("")){
+                    userModTmp.setMobile(loginUserRequest.getMobile());
+                }
+                if(loginUserRequest.getUsername()!= null && !loginUserRequest.getUsername().equals("")){
+                    userModTmp.setUsername(loginUserRequest.getUsername());
+                }
+                userRepo.save(userModTmp);
+                return true;
+            }else{
+                throw  new Exception("user is not found");
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public boolean deleteUser(Integer Id) throws  Exception{
+
+        UserModel userModTmp = userRepo.findById(Id).orElseThrow(()->new Exception("No User Found!!"));//get the data bases on primary key
+        userRepo.delete(userModTmp);
+        return  true;
+    }
+
+
 }

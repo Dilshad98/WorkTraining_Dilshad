@@ -1,0 +1,66 @@
+h1 {
+    text-align: center;
+    padding: 2%;
+  }
+  
+  .email > label{
+      margin-left: 40%;
+  }
+  .address > label{
+    margin-left: 40%;
+}
+.username > label{
+    margin-left: 40%;
+}
+
+.mobile > label{
+    margin-left: 40%;
+}
+  .pwd > label{
+      margin-left: 40%;
+  }
+  
+  #emailInp{
+      margin-left: 5%;
+  }
+
+  #usernameInp{
+    margin-left: 2.6%;
+}
+#mobileInp{
+    margin-left: 4.2%;
+}
+
+
+  #addressInp{
+    margin-left: 3.7%;
+}
+  #pwdInp{
+      margin-left: 3%;
+  }
+  .subBtn{
+      margin-top: 2%;
+      margin-bottom: 2%;
+      margin-left: 40%;
+      background-color: blue;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+  
+  }
+  .errorMsg{
+      
+      border: 2px solid red;
+  }
+  
+  span.errorMsg{
+      margin-bottom: 1%;
+      text-align: center;
+      display: block;
+      border: none;
+      color: red;
+      font-size: small;
+  }
+  
+  

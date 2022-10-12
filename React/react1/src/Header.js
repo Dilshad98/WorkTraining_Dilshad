@@ -26,6 +26,8 @@ function Header(props){
                 <li className={props.menubar =='Contact'?"active":''}><a href="Contact">Contact</a></li>
                 <li className={props.menubar =='ClaCom'?"active":''}><a href="ClaCom">ClaCom</a></li>
                 <li className={props.menubar =='Login'?"active":''}><a href="Login">Login</a></li>
+                <li className={props.menubar =='Register'?"active":''}><a href="Register">Register</a></li>
+                <li className={props.menubar =='UpdateUser'?"active":''}><a href="UpdateUser">Update</a></li>
                 {/* {LoginStatus?<li><a href="#">Logout</a></li>:<li><a>Login</a></li>} */}
             </ul>
         </div>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -160,9 +161,9 @@ public class UserController {
         for(UserModel user : userList){
             System.out.println(user.getEmail() );
             System.out.println(loginUserRequest.getEmail() );
-            System.out.println(user.getPwd());
+            System.out.println(user.getPassword());
             System.out.println(loginUserRequest.getPassword() );
-            if(loginUserRequest.getEmail().equals(user.getEmail()) && loginUserRequest.getPassword().equals(user.getPwd())){
+            if(loginUserRequest.getEmail().equals(user.getEmail()) && loginUserRequest.getPassword().equals(user.getPassword())){
                 LoginStatus = true;
                 break;
             }
@@ -178,8 +179,89 @@ public class UserController {
 
     }
 
+    @PostMapping("Register")
+    public ResponseEntity<?> register(@RequestBody LoginUserRequest loginUserRequest){
+        GeneralResponse response = new GeneralResponse();
+        try{
+            userService.createUser(loginUserRequest);
+            response.setMessage("Resgistration Successful");
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("LoginUser")
+    public ResponseEntity<?> loginUsr (@RequestBody LoginUserRequest loginUserRequest){
+        GeneralResponse response = new GeneralResponse();
+        try{
+            UserModel user = userService.validateLogin(loginUserRequest.getEmail() , loginUserRequest.getPassword());
+            return ResponseEntity.ok(user);
+        }
+        catch(Exception e){
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("ViewUser")
+    public ResponseEntity<?> ViewUser(){
+        try{
+            List<UserModel> userList = userService.viewUser();
+            return ResponseEntity.ok(userList);
+        }
+        catch(Exception e){
+            GeneralResponse response = new GeneralResponse();
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("ViewUser/{id}")
+    public ResponseEntity<?> ViewUserbyId(@PathVariable Integer id) {
+        try{
+            UserModel lis = userService.viewUser(id);
+            return ResponseEntity.ok(lis);
+        }
+        catch(Exception e){
+            GeneralResponse response = new GeneralResponse();
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    @PostMapping("user/update/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Integer id,
+                                        @RequestBody LoginUserRequest loginUserRequest){
+        GeneralResponse response = new GeneralResponse();
+        try{
+            userService.updateUser(id,loginUserRequest);
+
+            response.setMessage("User id : "+id +" Info  Updated!!");
+            return ResponseEntity.ok(response);
+        }
+        catch(Exception e){
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
 
 
+
+    }
+
+    @PostMapping("user/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id){
+        GeneralResponse response = new GeneralResponse();
+        try{
+            userService.deleteUser(id);
+            response.setMessage("User is deleted");
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
 
 
 }

@@ -1,14 +1,46 @@
 package com.SpringBoot1.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class UserModel {
 
-    int id;
+    @Id //primary key
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    Integer id;
     String username;
     String email;
-    String pwd;
+    @JsonIgnore
+    String password;
 
-    public int getId() {
+    String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    String address;
+
+    public Integer getId() {
         return id;
+    }
+
+    public UserModel() {
     }
 
     public String getUsername() {
@@ -19,7 +51,7 @@ public class UserModel {
         this.username = name;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -31,18 +63,18 @@ public class UserModel {
         this.email = email;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassword(String pwd) {
+        this.password = password;
     }
 
-    public UserModel(int id,String email,String pwd,String username) {
+    public UserModel(Integer id,String email,String password,String username) {
         this.id = id;
         this.email = email;
-        this.pwd = pwd;
+        this.password = password;
         this.username = username;
     }
 }

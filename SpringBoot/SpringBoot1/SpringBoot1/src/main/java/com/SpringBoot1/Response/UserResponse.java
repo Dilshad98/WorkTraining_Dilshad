@@ -1,7 +1,7 @@
 package com.SpringBoot1.Response;
 
 public class UserResponse {
-    int id;
+    Integer id;
     String username,email,pwd,message;
 
     public String getEmail() {
@@ -12,11 +12,11 @@ public class UserResponse {
         this.email = email;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,7 +47,7 @@ public class UserResponse {
     public UserResponse() {
     }
 
-    public UserResponse(int id, String username, String email, String pwd, String message) {
+    public UserResponse(Integer id, String username, String email, String pwd, String message) {
         this.id = id;
         this.username = username;
         this.email = email;
