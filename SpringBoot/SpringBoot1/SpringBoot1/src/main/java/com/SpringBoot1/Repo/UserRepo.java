@@ -2,8 +2,10 @@ package com.SpringBoot1.Repo;
 
 import com.SpringBoot1.Model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -15,5 +17,12 @@ public interface UserRepo extends JpaRepository<UserModel,Integer> {
 
     @Query("select user from UserModel user where email = ?1")
     Optional<UserModel> getValidEmail(String email);
+
+
+    @Modifying
+    @Transactional
+    @Query("update  UserModel  set token = ?1 where id = ?2")
+    Integer updateTokenUsingUserId(String token, Integer id);
+
 
 }

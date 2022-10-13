@@ -205,6 +205,18 @@ public class UserController {
         }
     }
 
+
+//    @PostMapping("tokenCheck")
+//    public ResponseEntity<?> tokenCheck( @RequestHeader String token,@RequestHeader String id){
+//        try{
+//            System.out.println("Token: "+token+"\nid:"+id);
+//            return ResponseEntity.ok(token);
+//        }catch (Exception e){
+//            GeneralResponse response = new GeneralResponse();
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
+//    }
     @GetMapping("ViewUser")
     public ResponseEntity<?> ViewUser(){
         try{
@@ -261,6 +273,20 @@ public class UserController {
             return ResponseEntity.badRequest().body(response);
         }
 
+    }
+
+    @PostMapping("logout/{id}")
+    public ResponseEntity<?> ViewUser(@PathVariable Integer id){
+        GeneralResponse  response = new GeneralResponse();
+        try{
+            System.out.println("id: "+id);
+            userService.logout(id);
+            response.setMessage("Logout Successfully");
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
 

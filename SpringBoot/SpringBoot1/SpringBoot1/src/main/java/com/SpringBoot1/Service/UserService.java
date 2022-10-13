@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -85,14 +86,41 @@ public class UserService {
 
     public UserModel validateLogin(String email,String password) throws  Exception{
         UserModel user =  userRepo.getUserByEmailAndPassword(email,password).orElseThrow(()->new Exception("Invalid username and password,Please Try Again!!"));
+        String token = tokenCreation(user.getEmail());
+        updateTokenAuth(token, user.getId());
+        user.setToken(token);
         return  user;
     }
+
+
+    private String tokenCreation(String email){
+        String encodeEmail = Base64.getEncoder().encode(email.getBytes()).toString();
+        String token = encodeEmail +  System.currentTimeMillis();
+        return token;
+    }
+
+    private void updateTokenAuth(String token ,int id){
+        userRepo.updateTokenUsingUserId(token,id);
+    }
+
+    public boolean validateTokenAuth(String token,Integer id) throws  Exception{
+        UserModel user = viewUser(id);
+        if(user.getToken().equals(token)){
+            return true;
+        }else{
+            throw new Exception("token not matched!!!");
+        }
+    }
+
+
     public List<UserModel> viewUser() throws  Exception {
 
         return userRepo.findAll();
 
 
     }
+
+
     public UserModel viewUser(Integer id) throws Exception{
         Optional <UserModel> userModel =  userRepo.findById(id);
 
@@ -138,6 +166,12 @@ public class UserService {
         userRepo.delete(userModTmp);
         return  true;
     }
+
+    public boolean logout(int id) throws Exception{
+        updateTokenAuth("",id);
+        return  true;
+    }
+
 
 
 }
