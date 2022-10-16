@@ -1,15 +1,22 @@
 package com.SpringBoot1.Controller;
 
+import com.SpringBoot1.Config.CusException;
 import com.SpringBoot1.Model.UserModel;
 import com.SpringBoot1.Request.CalClass;
 import com.SpringBoot1.Request.LoginUserRequest;
 import com.SpringBoot1.Response.GeneralResponse;
 import com.SpringBoot1.Response.UserResponse;
 import com.SpringBoot1.Service.UserService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -180,29 +187,29 @@ public class UserController {
     }
 
     @PostMapping("Register")
-    public ResponseEntity<?> register(@RequestBody LoginUserRequest loginUserRequest){
+    public ResponseEntity<?> register(@RequestBody LoginUserRequest loginUserRequest) throws Exception{
         GeneralResponse response = new GeneralResponse();
-        try{
+        //try{
             userService.createUser(loginUserRequest);
             response.setMessage("Resgistration Successful");
             return ResponseEntity.ok(response);
-        }catch(Exception e){
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+//        }catch(Exception e){
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
     }
 
     @PostMapping("LoginUser")
-    public ResponseEntity<?> loginUsr (@RequestBody LoginUserRequest loginUserRequest){
+    public ResponseEntity<?> loginUsr (@RequestBody LoginUserRequest loginUserRequest) throws Exception{
         GeneralResponse response = new GeneralResponse();
-        try{
+        //try{
             UserModel user = userService.validateLogin(loginUserRequest.getEmail() , loginUserRequest.getPassword());
             return ResponseEntity.ok(user);
-        }
-        catch(Exception e){
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+        //}
+//        catch(Exception e){
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
     }
 
 
@@ -218,75 +225,108 @@ public class UserController {
 //        }
 //    }
     @GetMapping("ViewUser")
-    public ResponseEntity<?> ViewUser(){
-        try{
+    public ResponseEntity<?> ViewUser() throws Exception{
+        //try{
             List<UserModel> userList = userService.viewUser();
             return ResponseEntity.ok(userList);
-        }
-        catch(Exception e){
-            GeneralResponse response = new GeneralResponse();
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+        //}
+//        catch(Exception e){
+//            GeneralResponse response = new GeneralResponse();
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
     }
 
     @GetMapping("ViewUser/{id}")
-    public ResponseEntity<?> ViewUserbyId(@PathVariable Integer id) {
-        try{
+    public ResponseEntity<?> ViewUserbyId(@PathVariable Integer id) throws Exception {
+        //try{
             UserModel lis = userService.viewUser(id);
             return ResponseEntity.ok(lis);
-        }
-        catch(Exception e){
-            GeneralResponse response = new GeneralResponse();
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+        //}
+//        catch(Exception e){
+//            GeneralResponse response = new GeneralResponse();
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
     }
     @PostMapping("user/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id,
-                                        @RequestBody LoginUserRequest loginUserRequest){
+                                        @RequestBody LoginUserRequest loginUserRequest) throws Exception{
         GeneralResponse response = new GeneralResponse();
-        try{
+        //try{
             userService.updateUser(id,loginUserRequest);
 
             response.setMessage("User id : "+id +" Info  Updated!!");
             return ResponseEntity.ok(response);
-        }
-        catch(Exception e){
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+        //}
+//        catch(Exception e){
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
 
 
 
     }
 
     @PostMapping("user/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Integer id){
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id) throws Exception{
         GeneralResponse response = new GeneralResponse();
-        try{
+//        try{
             userService.deleteUser(id);
             response.setMessage("User is deleted");
             return ResponseEntity.ok(response);
-        }catch (Exception e){
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+//        }catch (Exception e){
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
 
     }
 
+    @PostMapping("imgUpload")
+    public ResponseEntity<?> imgUpload(@RequestParam Integer id, @RequestParam MultipartFile img) throws Exception {
+
+        System.out.println("ffff"+img.getOriginalFilename());
+        GeneralResponse response = new GeneralResponse();
+        try(FileOutputStream output = new FileOutputStream("C:\\Users\\dilsh\\WorkTrain\\WorkTraining_Dilshad\\SpringBoot\\SpringBoot1\\SpringBoot1\\data\\"+img.getOriginalFilename())){
+            output.write(img.getBytes());
+
+
+            // Call the service method with id and image file
+            userService.uploadImage(img.getOriginalFilename(),id);
+            response.setMessage("File Upload Successfully!!!"+img.getOriginalFilename());
+
+            return ResponseEntity.ok(response);
+        }
+       catch(Exception e){
+           response.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+    @GetMapping(
+            value = "readUploadImg/{id}",
+            produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public byte[] image(@PathVariable Integer id) throws Exception {
+
+        UserModel user = userService.viewUser(id);
+        FileInputStream input = new FileInputStream("C:\\Users\\dilsh\\WorkTrain\\WorkTraining_Dilshad\\SpringBoot\\SpringBoot1\\SpringBoot1\\data\\"+user.getImg());
+        return IOUtils.toByteArray(input);
+
+    }
+
+
     @PostMapping("logout/{id}")
-    public ResponseEntity<?> ViewUser(@PathVariable Integer id){
+    public ResponseEntity<?> ViewUser(@PathVariable Integer id) throws Exception{
         GeneralResponse  response = new GeneralResponse();
-        try{
+//        try{
             System.out.println("id: "+id);
             userService.logout(id);
             response.setMessage("Logout Successfully");
             return ResponseEntity.ok(response);
-        }catch (Exception e){
-            response.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+//        }catch (Exception e){
+//            response.setMessage(e.getMessage());
+//            return ResponseEntity.badRequest().body(response);
+//        }
     }
 
 

@@ -21,26 +21,36 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
         String curUrl = request.getRequestURL().toString();
         System.out.println("Current URL : "+ curUrl);
 
-        if(curUrl.endsWith("LoginUser")){
-            System.out.println("Can access without token!!!");
-            return true;
-        }
+        try {
+            if (curUrl.endsWith("LoginUser") || curUrl.contains("Register")|| curUrl.contains("readUploadImg")) {
+                System.out.println("Can access without token!!!");
+                return true;
+            }
 
-        String token = request.getHeader("token");
-        String id = request.getHeader("id");
-        Integer idInt = Integer.parseInt(id);
+            String token = request.getHeader("token");
+            String id = request.getHeader("id");
 
-        if(token.equals("")){
-            throw new Exception("NO TOKEN!!!");
-        }
-        if(id.equals("")){
-            throw new Exception("No Id!!!");
-        }
 
-        if(userService.validateTokenAuth(token,idInt)){
-            return true;
-        }else {
-            return false;
+            if (token == null || token.equals("")) {
+                System.out.println("Token is null/empty");
+                throw new CusException("NO TOKEN!!!");
+            }
+            if (id == null || id.equals("")) {
+                System.out.println("Id is null/empty");
+                throw new CusException("No Id!!!");
+            }
+
+            Integer idInt = Integer.parseInt(id);
+            userService.checkToken(token);
+            if (userService.validateTokenAuth(token, idInt)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+        catch(Exception e){
+            throw new CusException(e.getMessage());
         }
     }
 

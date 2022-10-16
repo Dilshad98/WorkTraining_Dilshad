@@ -1,21 +1,27 @@
 package com.SpringBoot1.Service;
 
+import com.SpringBoot1.Config.CusException;
 import com.SpringBoot1.Model.UserModel;
 import com.SpringBoot1.Repo.UserRepo;
 import com.SpringBoot1.Request.LoginUserRequest;
+import com.SpringBoot1.Response.GeneralResponse;
 import com.SpringBoot1.Response.UserResponse;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
+    @Autowired
+    Environment environment;
 //    @Autowired
 //    UserRepo userRepo;
 //    public int addition(int a, int b){
@@ -66,7 +72,7 @@ public class UserService {
         try{
             Optional<UserModel> usrEmailExist = userRepo.getValidEmail(loginUserRequest.getEmail());
             if(usrEmailExist.isPresent()){
-                throw new Exception("Email already exist!!");
+                throw new CusException("Email already exist!!");
             }
             UserModel userModel = new UserModel();
             userModel.setEmail(loginUserRequest.getEmail());
@@ -86,19 +92,33 @@ public class UserService {
 
     public UserModel validateLogin(String email,String password) throws  Exception{
         UserModel user =  userRepo.getUserByEmailAndPassword(email,password).orElseThrow(()->new Exception("Invalid username and password,Please Try Again!!"));
-        String token = tokenCreation(user.getEmail());
+        String token = tokenCreation(user);
         updateTokenAuth(token, user.getId());
         user.setToken(token);
         return  user;
     }
 
 
-    private String tokenCreation(String email){
-        String encodeEmail = Base64.getEncoder().encode(email.getBytes()).toString();
-        String token = encodeEmail +  System.currentTimeMillis();
+    private String tokenCreation(UserModel User){
+        Calendar c = Calendar.getInstance();
+        //c.add(Calendar.SECOND,3);
+        c.add(Calendar.DAY_OF_YEAR,4);
+        String token = Jwts.builder()
+                .claim("email", User.getEmail())
+                .setSubject(User.getUsername())
+                .setId(""+User.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(c.getTime())
+                .signWith(SignatureAlgorithm.HS512,environment.getProperty("JWT_SECRET"))
+                .compact();
         return token;
     }
 
+    public boolean checkToken(String token) throws CusException {
+        //Jwts.parser().setSigningKey("SECRETKEY").parseClaimsJws(token);
+        Jwts.parser().setSigningKey(environment.getProperty("JWT_SECRET")).parseClaimsJws(token);
+        return true;
+    }
     private void updateTokenAuth(String token ,int id){
         userRepo.updateTokenUsingUserId(token,id);
     }
@@ -108,7 +128,7 @@ public class UserService {
         if(user.getToken().equals(token)){
             return true;
         }else{
-            throw new Exception("token not matched!!!");
+            throw new CusException("token not matched!!!");
         }
     }
 
@@ -127,7 +147,7 @@ public class UserService {
         if(userModel.isPresent()){
             return userModel.get();
         }else{
-            throw new Exception("User Not Found!!");
+            throw new CusException("User Not Found!!");
         }
     }
     public boolean updateUser(Integer id ,LoginUserRequest loginUserRequest) throws  Exception{
@@ -150,7 +170,7 @@ public class UserService {
                 userRepo.save(userModTmp);
                 return true;
             }else{
-                throw  new Exception("user is not found");
+                throw new CusException("User is not found!!!");
             }
 
 
@@ -162,10 +182,19 @@ public class UserService {
 
     public boolean deleteUser(Integer Id) throws  Exception{
 
-        UserModel userModTmp = userRepo.findById(Id).orElseThrow(()->new Exception("No User Found!!"));//get the data bases on primary key
+        UserModel userModTmp = userRepo.findById(Id).orElseThrow(()->new CusException("No User Found!!!"));
         userRepo.delete(userModTmp);
         return  true;
     }
+
+    public boolean uploadImage(String img,Integer id) throws Exception{
+        userRepo.uploadImgDB(img,id);
+        System.out.println("Service method");
+        return true;
+    }
+
+
+
 
     public boolean logout(int id) throws Exception{
         updateTokenAuth("",id);
