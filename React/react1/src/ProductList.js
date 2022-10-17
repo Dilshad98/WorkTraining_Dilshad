@@ -4,7 +4,7 @@ import './ProductList.css';
 function ProductList(){
     return(
         <div>
-            <Header menubar="ProductList"/>
+            <Header menubar="ProductList" />
               {/* Main Context  */}
             <h2>Product List</h2>
 

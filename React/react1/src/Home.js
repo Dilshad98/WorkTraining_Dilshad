@@ -1,9 +1,25 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import './Home.css';
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 function Home(){
+    let navigate = useNavigate(); 
 
+    const checkLoginToken=()=>{
+        let token = localStorage.getItem("token");
+        if(token == undefined || token == ""){
+           return false;
+        }
+        return true;
+  }
+  useEffect(()=>{
+     if(!checkLoginToken()){
+        
+    
+        navigate("/Login");
+     }
+     },[])
     return(
         <div>
             <Header menubar="Home"/>

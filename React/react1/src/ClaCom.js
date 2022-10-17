@@ -4,7 +4,7 @@ import Header from './Header';
 import './ClaCom.css';
 import UserInfo from './UserInfo';
 
- class ClaCom extends Component {
+ class ClaCom extends Component  {
     constructor(){
         super();
         this.state={

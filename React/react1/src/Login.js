@@ -3,12 +3,17 @@ import Footer from "./Footer";
 import './Login.css';
 
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { httpPostWithoutHeader } from "./HttpFetch.js";
 function Login(){
     const[email,setEmail] = useState("");
     const[pwd,setPwd] = useState("");
     const [resjson,setResjson] = useState([]);
     const [errorEmail,setErrorEmail] = useState();
     const [errorPwd,setErrorPwd] = useState();
+    let navigate = useNavigate(); 
+
+
     const submitBtn=()=>{
         // if(email == "" ){
         //         setErrorEmail(true);
@@ -24,22 +29,29 @@ function Login(){
                 password: pwd,
             }
           
-            fetch("http://localhost:8080/LoginUser", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify(param)
-             })
-
-             .then(res=>res.json())
+            httpPostWithoutHeader("LoginUser", param)
+             .then(res=>{
+                if(!res.ok){
+                    throw res;
+                }
+                return res.json();
+            })
 
             .then(res=>{
                     if(res.status)
                     console.log(res);
                     setResjson(JSON.stringify(res));
+                    localStorage.setItem("Full_Res",JSON.stringify(res));
+                    localStorage.setItem("token",res["token"]);
+                    localStorage.setItem("id",res["id"]);
+                    navigate("/Home");
                     
-            })
+            }).catch(e =>{
+                
+                    alert("login Failed !!!");
+                })
+               
+            }
             // .then((res) =>{
             //     if(!res.ok){
             //         throw res;
@@ -58,11 +70,11 @@ function Login(){
             // setPwd('');
       // }
 
-    }
+    
     return(
 
         <div>
-            <Header menubar="Login"/>
+            <Header menubar="Login" isLoginPg="true"/>
             {/* Main Content  */}
             <h2>Login</h2>
           
@@ -104,7 +116,7 @@ function Login(){
             <div id="response">{resjson}</div>
             <Footer/>
         </div>
-    )
+    );
 
 }
 export default Login;

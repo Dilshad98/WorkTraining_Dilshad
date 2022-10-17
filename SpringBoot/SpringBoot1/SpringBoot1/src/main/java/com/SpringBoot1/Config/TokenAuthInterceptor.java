@@ -22,6 +22,10 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
         System.out.println("Current URL : "+ curUrl);
 
         try {
+
+            if(request.getMethod().equals("OPTIONS")){
+                return true;
+            }
             if (curUrl.endsWith("LoginUser") || curUrl.contains("Register")|| curUrl.contains("readUploadImg")) {
                 System.out.println("Can access without token!!!");
                 return true;
@@ -29,7 +33,7 @@ public class TokenAuthInterceptor implements HandlerInterceptor {
 
             String token = request.getHeader("token");
             String id = request.getHeader("id");
-
+           System.out.println("Token : "+token);
 
             if (token == null || token.equals("")) {
                 System.out.println("Token is null/empty");

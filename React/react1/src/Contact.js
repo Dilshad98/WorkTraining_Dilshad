@@ -7,7 +7,7 @@ import './Contact.css';
 function Contact(){
     return(
         <div>
-            <Header menubar="Contact"/>
+            <Header menubar="Contact" />
              {/* Main Content  */}
             <h2>Contact Us</h2>
 
